@@ -7,16 +7,9 @@
 // EFFECT: Effect<TestReport, never, TestEnvironment>
 // COMPLEXITY: O(n) test execution where n = |test_files|
 
-import path from "node:path"
-import { fileURLToPath } from "node:url"
-import tsconfigPaths from "vite-tsconfig-paths"
 import { defineConfig } from "vitest/config"
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-
 export default defineConfig({
-  plugins: [tsconfigPaths()], // Resolves @/* paths from tsconfig
   test: {
     // CHANGE: Native ESM support without experimental flags
     // WHY: Vitest designed for ESM, no need for --experimental-vm-modules
@@ -76,10 +69,5 @@ export default defineConfig({
     // CHANGE: Disable globals to enforce explicit imports
     // WHY: Type safety, explicit dependencies, functional purity
     // NOTE: Tests must import { describe, it, expect } from "vitest"
-  },
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "src")
-    }
   }
 })

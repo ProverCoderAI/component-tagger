@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "..",
+    "outDir": "dist",
+    "types": ["@playwright/test", "node"],
+    "lib": ["ES2022", "DOM"],
+    "jsx": "react-jsx",
+    "allowImportingTsExtensions": true
+  },
+  "include": ["src/**/*", "tests/**/*", "vite.config.ts", "playwright.config.ts"],
+  "exclude": ["dist", "node_modules"]
+}
