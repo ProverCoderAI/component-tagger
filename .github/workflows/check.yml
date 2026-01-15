@@ -46,7 +46,7 @@ jobs:
       # Install TypeScript and Biome globally as a workaround
       # See: https://github.com/ton-ai-core/vibecode-linter/issues (pending issue)
       - name: Install global linter dependencies
-        run: npm install -g typescript @biomejs/biome
+        run: npm install -g typescript @biomejs/biome@2.3.11
       - run: pnpm lint
 
   test:
@@ -59,7 +59,7 @@ jobs:
         uses: ./.github/actions/setup
       # vibecode-linter uses npx internally for dependency checks (lint:tests runs first)
       - name: Install global linter dependencies
-        run: npm install -g typescript @biomejs/biome
+        run: npm install -g typescript @biomejs/biome@2.3.11
       - run: pnpm test
 
   lint-effect:
