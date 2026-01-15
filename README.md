@@ -10,4 +10,16 @@ Example output:
 
 Format: `<relative-file-path>:<line>:<column>`
 
-Recommended: enable only in `development` mode in Vite config.
+## Usage
+
+```ts
+import { defineConfig, type PluginOption } from "vite"
+import { componentTagger } from "@prover-coder-ai/component-tagger"
+
+export default defineConfig(({ mode }) => {
+  const isDevelopment = mode === "development"
+  const plugins = [isDevelopment && componentTagger()].filter(Boolean) as PluginOption[]
+
+  return { plugins }
+})
+```
