@@ -22,7 +22,6 @@ jobs:
       package_json_path: packages/app/package.json
       pnpm_filter: ./packages/app
       bump_type: patch
-      pnpm_version: 10.28.0
       publish_npm: true
       publish_github_packages: true
     secrets: inherit
