@@ -29,6 +29,9 @@ importers:
       effect:
         specifier: ^3.19.14
         version: 3.19.14
+      vite:
+        specifier: ^7.3.1
+        version: 7.3.1(@types/node@24.10.9)(jiti@2.6.1)(yaml@2.8.2)
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.3.11
@@ -38,7 +41,7 @@ importers:
         version: 0.3.2
       '@effect/language-service':
         specifier: latest
-        version: 0.71.1
+        version: 0.72.0
       '@effect/vitest':
         specifier: ^0.27.0
         version: 0.27.0(effect@3.19.14)(vitest@4.0.17(@types/node@24.10.9)(jiti@2.6.1)(yaml@2.8.2))
@@ -114,9 +117,6 @@ importers:
       typescript-eslint:
         specifier: ^8.53.1
         version: 8.53.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      vite:
-        specifier: ^7.3.1
-        version: 7.3.1(@types/node@24.10.9)(jiti@2.6.1)(yaml@2.8.2)
       vitest:
         specifier: ^4.0.17
         version: 4.0.17(@types/node@24.10.9)(jiti@2.6.1)(yaml@2.8.2)
@@ -430,8 +430,8 @@ packages:
       lmdb:
         optional: true
 
-  '@effect/language-service@0.71.1':
-    resolution: {integrity: sha512-H4dodHdwkymirPMPm4Z8ogiFvbMnxnO6HHASS5XeptrqRZ8AdA9MLkFxLU6nAn9QbL0I4V26U50lFOju7Z2riA==}
+  '@effect/language-service@0.72.0':
+    resolution: {integrity: sha512-MWkyTPCXSs5Q3OIBWR3q24SA+ipkdWW7EBJBt6EPUzlzZxjJLXtLBhXpMoCFheSEM0FTWOHT4BRLh5lufsmjVw==}
     hasBin: true
 
   '@effect/platform-node-shared@0.57.0':
@@ -3965,7 +3965,7 @@ snapshots:
       effect: 3.19.14
       uuid: 11.1.0
 
-  '@effect/language-service@0.71.1': {}
+  '@effect/language-service@0.72.0': {}
 
   '@effect/platform-node-shared@0.57.0(@effect/cluster@0.56.1(@effect/platform@0.94.1(effect@3.19.14))(@effect/rpc@0.73.0(@effect/platform@0.94.1(effect@3.19.14))(effect@3.19.14))(@effect/sql@0.49.0(@effect/experimental@0.58.0(@effect/platform@0.94.1(effect@3.19.14))(effect@3.19.14))(@effect/platform@0.94.1(effect@3.19.14))(effect@3.19.14))(@effect/workflow@0.16.0(@effect/experimental@0.58.0(@effect/platform@0.94.1(effect@3.19.14))(effect@3.19.14))(@effect/platform@0.94.1(effect@3.19.14))(@effect/rpc@0.73.0(@effect/platform@0.94.1(effect@3.19.14))(effect@3.19.14))(effect@3.19.14))(effect@3.19.14))(@effect/platform@0.94.1(effect@3.19.14))(@effect/rpc@0.73.0(@effect/platform@0.94.1(effect@3.19.14))(effect@3.19.14))(@effect/sql@0.49.0(@effect/experimental@0.58.0(@effect/platform@0.94.1(effect@3.19.14))(effect@3.19.14))(@effect/platform@0.94.1(effect@3.19.14))(effect@3.19.14))(effect@3.19.14)':
     dependencies:
