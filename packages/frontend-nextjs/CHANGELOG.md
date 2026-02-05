@@ -1,5 +1,12 @@
 # @component-tagger/frontend-nextjs
 
+## 0.1.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @prover-coder-ai/component-tagger@1.0.27
+
 ## 0.1.3
 
 ### Patch Changes
