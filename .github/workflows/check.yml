@@ -86,7 +86,7 @@ jobs:
       - name: Run Next.js E2E tests
         run: pnpm --filter frontend-nextjs test:e2e
       - name: Upload test results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         if: always()
         with:
           name: nextjs-e2e-results
