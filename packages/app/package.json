@@ -58,9 +58,9 @@
   "packageManager": "pnpm@10.29.3",
   "dependencies": {
     "@babel/core": "^7.29.0",
-    "@effect/platform": "^0.94.4",
+    "@effect/platform": "^0.94.5",
     "@effect/platform-node": "^0.104.1",
-    "effect": "^3.19.16"
+    "effect": "^3.19.17"
   },
   "peerDependencies": {
     "vite": "^7.3.1"
@@ -90,7 +90,7 @@
     "eslint-plugin-sonarjs": "^3.0.7",
     "eslint-plugin-sort-destructure-keys": "^2.0.0",
     "eslint-plugin-unicorn": "^63.0.0",
-    "@vitest/eslint-plugin": "^1.6.7",
+    "@vitest/eslint-plugin": "^1.6.9",
     "globals": "^17.3.0",
     "jscpd": "^4.0.8",
     "typescript": "^5.9.3",
