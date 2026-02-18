@@ -1,5 +1,12 @@
 # @component-tagger/frontend
 
+## 0.1.29
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @prover-coder-ai/component-tagger@1.0.30
+
 ## 0.1.28
 
 ### Patch Changes
