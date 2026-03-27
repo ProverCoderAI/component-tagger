@@ -1,7 +1,7 @@
 import { type PluginObj, transformAsync, types as t } from "@babel/core"
 import type { Path } from "@effect/platform/Path"
 import { Effect, pipe } from "effect"
-import type { PluginOption } from "vite"
+import type { Plugin } from "vite"
 
 import { babelPluginName, componentPathAttributeName, isJsxFile, normalizeModuleId } from "../core/component-path.js"
 import { createJsxTaggerVisitor, type JsxTaggerContext } from "../core/jsx-tagger.js"
@@ -20,9 +20,11 @@ export type ComponentTaggerOptions = {
 
 type BabelTransformResult = Awaited<ReturnType<typeof transformAsync>>
 
+type BabelSourceMap = NonNullable<NonNullable<BabelTransformResult>["map"]>
+
 type ViteTransformResult = {
   readonly code: string
-  readonly map: NonNullable<BabelTransformResult>["map"] | null
+  readonly map: string | null
 }
 
 class ComponentTaggerError extends Error {
@@ -33,16 +35,35 @@ class ComponentTaggerError extends Error {
   }
 }
 
-const toViteResult = (result: BabelTransformResult): ViteTransformResult | null => {
-  if (result === null || result.code === null || result.code === undefined) {
+const toSourceMapInput = (map: BabelSourceMap | null | undefined): string | null => {
+  if (map === null || map === undefined) {
     return null
+  }
+
+  return JSON.stringify({
+    file: map.file,
+    mappings: map.mappings,
+    names: map.names,
+    sources: map.sources,
+    version: map.version,
+    ...(map.sourceRoot === undefined ? {} : { sourceRoot: map.sourceRoot }),
+    ...(map.sourcesContent === undefined ? {} : { sourcesContent: map.sourcesContent })
+  })
+}
+
+const toViteResult = (result: BabelTransformResult, originalCode: string): ViteTransformResult => {
+  if (result === null || result.code === null || result.code === undefined) {
+    return {
+      code: originalCode,
+      map: null
+    }
   }
 
   const { code } = result
 
   return {
     code,
-    map: result.map ?? null
+    map: toSourceMapInput(result.map)
   }
 }
 
@@ -73,7 +94,7 @@ const makeBabelTagger = (relativeFilename: string, attributeName: string): Plugi
  *
  * @param code - Source code to transform.
  * @param id - Vite module id for the source code.
- * @returns Vite-compatible transform result or null when no output is produced.
+ * @returns Vite-compatible transform result.
  *
  * @pure false
  * @effect Babel transform
@@ -85,9 +106,9 @@ const makeBabelTagger = (relativeFilename: string, attributeName: string): Plugi
 // QUOTE(TZ): "Сам компонент должен быть в текущем app но вот что бы его протестировать надо создать ещё один проект который наш текущий апп будет подключать"
 // REF: user-2026-01-14-frontend-consumer
 // SOURCE: n/a
-// FORMAT THEOREM: forall c in Code: transform(c) = r -> r is tagged or null
+// FORMAT THEOREM: forall c in Code: transform(c) = r -> r is tagged
 // PURITY: SHELL
-// EFFECT: Effect<ViteTransformResult | null, ComponentTaggerError, never>
+// EFFECT: Effect<ViteTransformResult, ComponentTaggerError, never>
 // INVARIANT: errors are surfaced as ComponentTaggerError only
 // COMPLEXITY: O(n)/O(1)
 const runTransform = (
@@ -95,7 +116,7 @@ const runTransform = (
   id: string,
   rootDir: string,
   attributeName: string
-): Effect.Effect<ViteTransformResult | null, ComponentTaggerError, Path> => {
+): Effect.Effect<ViteTransformResult, ComponentTaggerError, Path> => {
   const cleanId = normalizeModuleId(id)
 
   return pipe(
@@ -120,7 +141,7 @@ const runTransform = (
         }
       })
     ),
-    Effect.map((result) => toViteResult(result))
+    Effect.map((result) => toViteResult(result, code))
   )
 }
 
@@ -128,7 +149,7 @@ const runTransform = (
  * Creates a Vite plugin that injects a single component-path data attribute.
  *
  * @param options - Configuration options for the plugin.
- * @returns Vite PluginOption for pre-transform tagging.
+ * @returns Vite plugin for pre-transform tagging.
  *
  * @pure false
  * @effect Babel transform through Effect
@@ -143,21 +164,21 @@ const runTransform = (
 // SOURCE: n/a
 // FORMAT THEOREM: forall id: isJsxFile(id) -> transform(id) adds specified attribute
 // PURITY: SHELL
-// EFFECT: Effect<ViteTransformResult | null, ComponentTaggerError, never>
+// EFFECT: Effect<ViteTransformResult, ComponentTaggerError, never>
 // INVARIANT: no duplicate attributes with the same name
 // COMPLEXITY: O(n)/O(1)
-export const componentTagger = (options?: ComponentTaggerOptions): PluginOption => {
+export const componentTagger = (options?: ComponentTaggerOptions): Plugin => {
   const attributeName = options?.attributeName ?? componentPathAttributeName
   let resolvedRoot = process.cwd()
 
-  return {
+  const plugin: Plugin = {
     name: "component-path-tagger",
     enforce: "pre",
     apply: "serve",
     configResolved(config) {
       resolvedRoot = config.root
     },
-    transform(code, id) {
+    transform(code, id, _options) {
       if (!isJsxFile(id)) {
         return null
       }
@@ -165,4 +186,6 @@ export const componentTagger = (options?: ComponentTaggerOptions): PluginOption 
       return Effect.runPromise(pipe(runTransform(code, id, resolvedRoot, attributeName), Effect.provide(NodePathLayer)))
     }
   }
+
+  return plugin
 }
