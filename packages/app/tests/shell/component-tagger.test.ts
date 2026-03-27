@@ -1,6 +1,5 @@
 import { describe, expect, it } from "@effect/vitest"
 import { Effect } from "effect"
-import type { Plugin } from "vite"
 
 import { componentTagger } from "../../src/shell/component-tagger.js"
 
@@ -19,7 +18,7 @@ describe("component-tagger (Vite plugin)", () => {
   describe("componentTagger", () => {
     it.effect("returns a Vite plugin with correct name", () =>
       Effect.sync(() => {
-        const plugin = componentTagger() as Plugin
+        const plugin = componentTagger()
 
         expect(plugin).toBeDefined()
         expect(plugin.name).toBe("component-path-tagger")
@@ -27,28 +26,28 @@ describe("component-tagger (Vite plugin)", () => {
 
     it.effect("has enforce: pre configuration", () =>
       Effect.sync(() => {
-        const plugin = componentTagger() as Plugin
+        const plugin = componentTagger()
 
         expect(plugin.enforce).toBe("pre")
       }))
 
     it.effect("applies only in serve mode", () =>
       Effect.sync(() => {
-        const plugin = componentTagger() as Plugin
+        const plugin = componentTagger()
 
         expect(plugin.apply).toBe("serve")
       }))
 
     it.effect("has transform hook", () =>
       Effect.sync(() => {
-        const plugin = componentTagger() as Plugin
+        const plugin = componentTagger()
 
         expect(plugin.transform).toBeDefined()
       }))
 
     it.effect("has configResolved hook", () =>
       Effect.sync(() => {
-        const plugin = componentTagger() as Plugin
+        const plugin = componentTagger()
 
         expect(plugin.configResolved).toBeDefined()
       }))
