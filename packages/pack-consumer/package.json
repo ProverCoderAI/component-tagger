@@ -10,7 +10,7 @@
     "@prover-coder-ai/component-tagger": "file:.pack/component-tagger.tgz"
   },
   "devDependencies": {
-    "typescript": "^6.0.2",
-    "vite": "^8.0.6"
+    "typescript": "^7.0.2",
+    "vite": "^8.2.2"
   }
 }
